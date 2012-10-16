@@ -9,7 +9,7 @@ module Rack
 
       def get(key)
         remote do
-          uri = URI("#{config.cachely_url}&url=#{key}")
+          uri = URI("#{config.cachely_url}&url=#{CGI.escape(key)}")
           response = Net::HTTP.get_response(uri)
           if config.verbose
             logger.info "Cachely [uri]: #{uri}"

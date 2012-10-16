@@ -3,6 +3,7 @@ require 'net/http'
 require 'timeout'
 require 'logger'
 require 'fileutils'
+require 'cgi'
 require 'rack'
 require "rack-cachely/version"
 require "rack-cachely/config"
