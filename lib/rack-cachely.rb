@@ -16,7 +16,6 @@ module Rack
     def initialize(app, options = {})
       @app = app
       self.class.config = Rack::Cachely::Config.new(options)
-      self.class.options = @options
     end
 
     def call(env)
