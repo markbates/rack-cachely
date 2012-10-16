@@ -12,6 +12,7 @@ module Rack
           uri = URI("#{config.cachely_url}&url=#{key}")
           response = Net::HTTP.get_response(uri)
           if config.verbose
+            logger.info "Cachely [uri]: #{uri}"
             logger.info "Cachely [response.code]: #{response.code}"
             logger.info "Cachely [response.body]: #{response.body}"
           end
@@ -56,10 +57,6 @@ module Rack
 
       def remote(&block)
         begin
-          if config.verbose
-            logger.debug "CACHELY_URL: #{config.cachely_url}"
-            logger.debug "CACHELY_API_KEY: #{config.cachely_api_key}"
-          end
           Timeout::timeout(0.5, &block)
         rescue Timeout::Error, Errno::ECONNREFUSED => e
           logger.error(e)
