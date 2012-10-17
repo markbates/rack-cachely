@@ -53,7 +53,7 @@ module Rack
       end
 
       def delete(pattern)
-        Net::HTTP.post_form(URI(cachely_url), {_method: "DELETE", pattern: pattern})
+        Net::HTTP.post_form(URI(config.cachely_url), {_method: "DELETE", pattern: pattern, _token: config.cachely_api_key})
       end
 
       def remote(&block)
