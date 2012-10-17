@@ -1,3 +1,5 @@
+ENV["RACK_ENV"] ||= "test"
+
 require 'bundler/setup'
 
 require 'rack-cachely' # and any other gems you need
