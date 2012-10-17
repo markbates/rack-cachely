@@ -8,9 +8,14 @@ describe Rack::Cachely::Store do
   describe "get" do
   
     it "retreives a page from the service" do
-      mock = double(code: "200", body: "hello!")
-      mock.stub!(:each_header).and_yield("Content-Type", "text/html")
-      Net::HTTP.stub!(:get_response).and_return(mock)
+      response_mock = double(code: "200", body: "hello!")
+      response_mock.stub!(:each_header).and_yield("Content-Type", "text/html")
+      Net::HTTP::Get.should_receive(:new).with("/v1/cache?url=http%3A%2F%2Fexample.com").and_return {
+        m = double
+        m.should_receive(:basic_auth).with("1234567890", nil)
+        m
+      }
+      Net::HTTP.should_receive(:new).with("www.cachelyapp.com", 80).and_return(double(request: response_mock))
 
       res = store.get(key)
       res[0].should eql(200)

@@ -9,8 +9,17 @@ module Rack
 
       def get(key)
         remote do
-          uri = URI("#{config.cachely_url}?url=#{CGI.escape(key.to_s)}")
-          response = Net::HTTP.get_response(uri)
+          url = "#{config.cachely_url}?url=#{CGI.escape(key.to_s)}"
+          uri = URI(url)
+          http = Net::HTTP.new(uri.host, uri.port)
+          request = Net::HTTP::Get.new(uri.request_uri)
+          matches = url.scan(/\/\/(.+)@/).flatten
+
+          if matches.any?
+            u, p = matches.first.split(":")
+            request.basic_auth(u, p)
+          end
+          response = http.request(request)
           if config.verbose
             logger.info "Cachely [uri]: #{uri}"
             logger.info "Cachely [response.code]: #{response.code}"
