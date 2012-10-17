@@ -6,8 +6,7 @@ module Rack
 
       def initialize(options = {})
         self.options = options
-        self.options[:cachely_api_key] ||= ENV["CACHELY_API_KEY"]
-        self.options[:cachely_url] = "#{(self.options[:cachely_url] ||= ENV["CACHELY_URL"])}/v1/cache?_token=#{self.options[:cachely_api_key]}"
+        self.options[:cachely_url] = "#{(self.options[:cachely_url] ||= ENV["CACHELY_URL"])}/v1/cache"
       end
 
       def method_missing(sym, *args, &block)

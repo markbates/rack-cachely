@@ -42,8 +42,7 @@ describe Rack::Cachely::Store do
         "document[status]" => 200, 
         "document[body]" => "hello!", 
         "document[age]" => 30, 
-        "document[headers][Content-Type]"=>"text/html",
-        "_token" => Rack::Cachely.config.cachely_api_key
+        "document[headers][Content-Type]" => "text/html"
       }
     end
     

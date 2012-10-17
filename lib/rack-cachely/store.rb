@@ -34,8 +34,7 @@ module Rack
             "document[url]" => key,
             "document[status]" => rack[0].to_i,
             "document[body]" => body,
-            "document[age]" => options[:age] || 0,
-            "_token" => Rack::Cachely.config.cachely_api_key
+            "document[age]" => options[:age] || 0
           }
           rack[1].each do |key, value|
             data["document[headers][#{key}]"] = value
@@ -53,7 +52,7 @@ module Rack
       end
 
       def delete(pattern)
-        Net::HTTP.post_form(URI(config.cachely_url), {_method: "DELETE", pattern: pattern, _token: config.cachely_api_key})
+        Net::HTTP.post_form(URI(config.cachely_url), {_method: "DELETE", pattern: pattern})
       end
 
       def remote(&block)
