@@ -34,7 +34,8 @@ module Rack
             "document[url]" => key,
             "document[status]" => rack[0].to_i,
             "document[body]" => body,
-            "document[age]" => options[:age] || 0
+            "document[age]" => options[:age] || 0,
+            "_token" => Rack::Cachely.config.cachely_api_key
           }
           rack[1].each do |key, value|
             data["document[headers][#{key}]"] = value
