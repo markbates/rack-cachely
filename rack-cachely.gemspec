@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.version       = Rack::Cachely::VERSION
   gem.authors       = ["Mark Bates"]
   gem.email         = ["mark@markbates.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Rack middleware for interfacing with the Cachely page caching service.}
+  gem.summary       = %q{Rack middleware for interfacing with the Cachely page caching service.}
+  gem.homepage      = "http://www.cachelyapp.com"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
