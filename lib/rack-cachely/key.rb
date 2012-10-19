@@ -44,11 +44,10 @@ module Rack
       def query_string
         return nil if @request.query_string.nil?
 
-        @request.query_string.split(/[&;] */n).
-          map { |p| unescape(p).split('=', 2) }.
-          sort.
-          map { |k,v| "#{escape(k)}=#{escape(v)}" }.
-          join('&')
+        query = @request.query_string.split(/[&;] */n).map { |p| unescape(p).split('=', 2) }.sort
+        query = query.reject{|k,v| Rack::Cachely.config.ignore_query_params.include?(k)}.map{ |k,v| "#{escape(k)}=#{escape(v)}" }
+
+        query.join('&')
       end
     end
 

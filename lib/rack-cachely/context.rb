@@ -7,7 +7,7 @@ module Rack
       end
 
       def request
-        @request ||= Rack::Request.new(@env.dup.freeze)
+        @request ||= Rack::Request.new(@env.dup)
       end
 
       def call(env)
@@ -31,7 +31,7 @@ module Rack
         else
           @env['rack-cachely.perform_caching'].to_s == 'true'
         end
-        config && request.request_method == 'GET'
+        config && request.request_method == 'GET' && !request.params["no-cachely"]
       end
 
       def is_cacheable?(results)

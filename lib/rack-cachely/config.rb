@@ -5,8 +5,15 @@ module Rack
       attr_accessor :options
 
       def initialize(options = {})
-        self.options = options
+        self.options = {ignore_query_params: []}
+        options.each do |key, value|
+          self.send("#{key}=", value)
+        end
         self.options[:cachely_url] = "#{(self.options[:cachely_url] ||= ENV["CACHELY_URL"])}/v1/cache"
+      end
+
+      def ignore_query_params=(*args)
+        self.options[:ignore_query_params] = [args].flatten.map {|x| x.downcase}
       end
 
       def method_missing(sym, *args, &block)
