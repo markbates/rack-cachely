@@ -9,7 +9,7 @@ module Rack
 
       def get(key)
         remote do
-          url = "#{config.cachely_url}?url=#{CGI.escape(key.to_s)}"
+          url = "#{config.cachely_url}?_version=#{Rack::Cachely::VERSION}&url=#{CGI.escape(key.to_s)}"
           uri = URI(url)
           http = Net::HTTP.new(uri.host, uri.port)
           request = Net::HTTP::Get.new(uri.request_uri)
@@ -43,7 +43,8 @@ module Rack
             "document[url]" => key,
             "document[status]" => rack[0].to_i,
             "document[body]" => body,
-            "document[age]" => options[:age] || 0
+            "document[age]" => options[:age] || 0,
+            "_version" => Rack::Cachely::VERSION
           }
           rack[1].each do |key, value|
             data["document[headers][#{key}]"] = value

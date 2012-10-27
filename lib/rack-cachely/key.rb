@@ -25,9 +25,9 @@ module Rack
           parts << @request.script_name
           parts << @request.path_info
 
-          if qs = query_string
+          if query_string && query_string != ""
             parts << "?"
-            parts << qs
+            parts << query_string
           end
 
           parts.join

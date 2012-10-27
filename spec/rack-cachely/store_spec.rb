@@ -10,7 +10,7 @@ describe Rack::Cachely::Store do
     it "retreives a page from the service" do
       response_mock = double(code: "200", body: "hello!")
       response_mock.stub!(:each_header).and_yield("Content-Type", "text/html")
-      Net::HTTP::Get.should_receive(:new).with("/v1/cache?url=http%3A%2F%2Fexample.com").and_return {
+      Net::HTTP::Get.should_receive(:new).with("/v1/cache?_version=#{Rack::Cachely::VERSION}&url=http%3A%2F%2Fexample.com").and_return {
         m = double
         m.should_receive(:basic_auth).with("1234567890", nil)
         m
@@ -47,7 +47,8 @@ describe Rack::Cachely::Store do
         "document[status]" => 200, 
         "document[body]" => "hello!", 
         "document[age]" => 30, 
-        "document[headers][Content-Type]" => "text/html"
+        "document[headers][Content-Type]" => "text/html",
+        "_version" => Rack::Cachely::VERSION
       }
     end
     

@@ -16,6 +16,16 @@ describe Rack::Cachely::Key do
       Rack::Cachely.config.ignore_query_params = ["A", "c"]
       key.to_s.should eql("http://example.com/foo/bar?b=B&d=D")
     end
+
+    context "no query string" do
+      
+      let(:request) { double(scheme: "http", host: "example.com", port: 80, script_name: "/foo", path_info: "/bar", query_string: "") }
+
+      it "does not have an empty ? at the end" do
+        key.to_s.should eql("http://example.com/foo/bar")
+      end
+
+    end
   
   end
 
