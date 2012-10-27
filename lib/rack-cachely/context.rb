@@ -35,7 +35,8 @@ module Rack
       end
 
       def is_cacheable?(results)
-        return false if results[0].to_i != 200
+        status = results[0].to_i
+        return false unless (200...300).include?(status)
         headers = results[1]
         control = headers["Cache-Control"]
         if /public/.match(control) && /max-age=(\d+)/.match(control)
