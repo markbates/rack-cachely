@@ -43,7 +43,7 @@ module Rack
       # and applying consistent escaping.
       def query_string
         return nil if @request.query_string.nil?
-        ignore_query_params = ["no-cachely", "expire-cachely", Rack::Cachely.config.ignore_query_params].flatten
+        ignore_query_params = ["no-cachely", "refresh-cachely", Rack::Cachely.config.ignore_query_params].flatten
         query = @request.query_string.split(/[&;] */n).map { |p| unescape(p).split('=', 2) }.sort
         query = query.reject{|k,v| ignore_query_params.include?(k)}.map{ |k,v| "#{escape(k)}=#{escape(v)}" }
 

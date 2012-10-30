@@ -13,7 +13,7 @@ module Rack
       def call(env)
         @env = env
         if self.perform_caching?
-          handle_expiration_request
+          handle_refresh_request
           results = Rack::Cachely::Store.get(key)
           if results
             return results
@@ -26,8 +26,8 @@ module Rack
         return results
       end
 
-      def handle_expiration_request
-        if request.params["expire-cachely"]
+      def handle_refresh_request
+        if request.params["refresh-cachely"]
           Rack::Cachely::Store.delete(key)
         end
       end
