@@ -13,6 +13,7 @@ module Rack
       def call(env)
         @env = env
         if self.perform_caching?
+          handle_expiration_request
           results = Rack::Cachely::Store.get(key)
           if results
             return results
@@ -25,13 +26,19 @@ module Rack
         return results
       end
 
+      def handle_expiration_request
+        if request.params["expire-cachely"]
+          Rack::Cachely::Store.delete(key)
+        end
+      end
+
       def perform_caching?
-        config = if Kernel.const_defined?(:Rails)
+        perform_caching = if defined?(Rails)
           Rails.application.config.action_controller.perform_caching
         else
           @env['rack-cachely.perform_caching'].to_s == 'true'
         end
-        config && request.request_method == 'GET' && !request.params["no-cachely"]
+        perform_caching && request.request_method == 'GET' && !request.params["no-cachely"]
       end
 
       def is_cacheable?(results)

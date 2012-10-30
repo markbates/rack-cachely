@@ -10,6 +10,9 @@ module Rack
       def get(key)
         remote do
           url = "#{config.cachely_url}?_version=#{Rack::Cachely::VERSION}&url=#{CGI.escape(key.to_s)}"
+          if config.verbose
+            logger.debug "Cachely [URL]: #{url}"
+          end
           uri = URI(url)
           http = Net::HTTP.new(uri.host, uri.port)
           request = Net::HTTP::Get.new(uri.request_uri)
@@ -25,7 +28,7 @@ module Rack
             logger.info "Cachely [response.code]: #{response.code}"
             logger.info "Cachely [response.body]: #{response.body}"
           end
-          if response.code.to_i == 200
+          if (200...300).include?(response.code.to_i)
             headers = {}
             response.each_header do |key, value|
               headers[key] = value
@@ -67,8 +70,9 @@ module Rack
 
       def remote(&block)
         begin
-          Timeout::timeout(0.5, &block)
+          Timeout::timeout(config.timeout, &block)
         rescue Timeout::Error, Errno::ECONNREFUSED => e
+          # raise e
           logger.error(e)
         end
       end
