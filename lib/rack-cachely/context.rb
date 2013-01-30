@@ -46,7 +46,7 @@ module Rack
         return false unless (200...300).include?(status)
         headers = results[1]
         control = headers["Cache-Control"]
-        if /public/.match(control) && /max-age=(\d+)/.match(control)
+        if /public/.match(control) && /max-age=(\d+)/.match(control) && !/\/assets\//.match(key)
           @age = $1
           return true
         end
