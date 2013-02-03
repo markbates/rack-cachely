@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rack-cachely (0.3.2)
+    rack-cachely (0.3.3)
       rack
 
 GEM
