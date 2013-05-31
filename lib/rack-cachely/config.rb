@@ -5,7 +5,7 @@ module Rack
       attr_accessor :options
 
       def initialize(options = {})
-        self.options = {ignore_query_params: [], timeout: 1.0}
+        self.options = {ignore_query_params: [], allow_query_params: [], timeout: 1.0}
         options.each do |key, value|
           self.send("#{key}=", value)
         end
@@ -14,6 +14,10 @@ module Rack
 
       def ignore_query_params=(*args)
         self.options[:ignore_query_params] = [args].flatten.map {|x| x.downcase}
+      end
+
+      def allow_query_params=(*args)
+        self.options[:allow_query_params] = [args].flatten.map {|x| x.downcase}
       end
 
       def method_missing(sym, *args, &block)
