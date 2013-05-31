@@ -43,11 +43,48 @@ module Rack
       # and applying consistent escaping.
       def query_string
         return nil if @request.query_string.nil?
-        ignore_query_params = ["no-cachely", "refresh-cachely", Rack::Cachely.config.ignore_query_params].flatten
-        query = @request.query_string.split(/[&;] */n).map { |p| unescape(p).split('=', 2) }.sort
-        query = query.reject{|k,v| ignore_query_params.include?(k)}.map{ |k,v| "#{escape(k)}=#{escape(v)}" }
+        if whitelist_mode?
+          whitelist(@request.query_string)
+        else
+          blacklist(@request.query_string)
+        end
+      end
 
-        query.join('&')
+      def whitelist(query_string)
+        query_params = deparameterize(query_string)
+        whitelisted_params = query_params.select{|k,v| whitelisted?(k) }
+        parameterize(whitelisted_params)
+      end
+
+      def blacklist(query_string)
+        query_params = deparameterize(query_string)
+        blacklisted_params = query_params.reject{|k,v| blacklisted?(k) }
+        parameterize(blacklisted_params)
+      end
+
+      def parameterize(params)
+        params.map{ |k,v| "#{escape(k)}=#{escape(v)}" }.join('&')
+      end
+
+      def deparameterize(query_string)
+        query_string.split(/[&;] */n).map { |p| unescape(p).split('=', 2) }.sort
+      end
+
+      def whitelisted?(param)
+        Rack::Cachely.config.allow_query_params.include?(param)
+      end
+
+      def blacklisted?(param)
+        ["no-cachely", "refresh-cachely", Rack::Cachely.config.ignore_query_params].flatten.include?(param)
+      end
+
+      def whitelist_mode?
+        # Whitelist mode is enabled when the whitelist is the ONLY list set
+        Rack::Cachely.config.ignore_query_params.empty? && Rack::Cachely.config.allow_query_params.any?
+      end
+
+      def blacklist_mode?
+        !whitelist_mode?
       end
     end
 
