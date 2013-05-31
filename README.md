@@ -46,14 +46,14 @@ end
 ### Detailed Configuration
 
 ```ruby
-config.middleware.use Rack::Cachely, 
+config.middleware.use Rack::Cachely,
   # Print debug information out to the log (default is false):
-  verbose: false, 
+  verbose: false,
   # Each Cachely account has a custom URL endpoint.
   # The URL can be found in your Heroku config or through
   # your Cachely dashboard. By default it looks for an
   # ENV variable named CACHELY_URL:
-  cachely_url: ENV["CACHELY_URL"], 
+  cachely_url: ENV["CACHELY_URL"],
   # How long are you willing to wait for requests to the Cachely
   # service to respond? Default is 1 second.
   timeout: 1.0
@@ -83,3 +83,8 @@ Rack::Cachely::Store.delete("users/\d+")
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Contributors
+
+* Mark Bates
+* Tim Raymond
