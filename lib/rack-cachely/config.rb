@@ -9,7 +9,17 @@ module Rack
         options.each do |key, value|
           self.send("#{key}=", value)
         end
-        self.options[:cachely_url] = "#{(self.options[:cachely_url] ||= ENV["CACHELY_URL"])}/v1/cache"
+
+        url = options[:cachely_url] || ENV["CACHELY_URL"]
+
+        if !url || (url.respond_to?(:empty?) && url.empty?)
+          self.logger.warn("Cachely: config incomplete (cachely_url is missing), disabling cachley.")
+          self.options[:enabled] = false
+        else
+          url = "#{url}/v1/cache"
+          self.options[:enabled] = true
+        end
+        self.cachely_url = url
       end
 
       def ignore_query_params=(*args)

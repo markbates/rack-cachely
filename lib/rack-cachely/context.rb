@@ -38,7 +38,7 @@ module Rack
         else
           @env['rack-cachely.perform_caching'].to_s == 'true'
         end
-        perform_caching && request.request_method == 'GET' && !request.params["no-cachely"]
+        perform_caching && config.enabled && request.request_method == 'GET' && !request.params["no-cachely"]
       end
 
       def is_cacheable?(results)
