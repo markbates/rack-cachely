@@ -35,7 +35,7 @@ describe Rack::Cachely::Store do
         store.get(key).should be_nil
       }.to_not raise_error(Timeout::Error)
     end
-  
+
   end
 
   describe "post" do
