@@ -70,8 +70,8 @@ module Rack
 
       def remote(&block)
         begin
-          Timeout::timeout(config.timeout, &block)
-        rescue Timeout::Error, Errno::ECONNREFUSED => e
+          ::Timeout::timeout(config.timeout, &block)
+        rescue ::Timeout::Error, Errno::ECONNREFUSED => e
           # raise e
           logger.error(e)
         end
