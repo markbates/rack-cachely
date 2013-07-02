@@ -18,9 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-**CACHELY IS CURRENTLY IN PRIVATE BETA.**
-
-If you would like to join the private beta, please email [mark+cachely@meta42.com](mailto:mark+cachely@meta42.com)
+Cachely is currently available only as a Heroku Add-on.
 
 ### Rails 3.x
 
@@ -87,4 +85,5 @@ Rack::Cachely::Store.delete("users/\d+")
 ## Contributors
 
 * Mark Bates
+* Sam Beam
 * Tim Raymond
